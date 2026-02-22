@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>あめときどき、ツール</title>
+    <!-- Google Fonts で優しいフォントを読み込み -->
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f0f4f8;
+            --main-text: #5a6772;
+            --accent-blue: #a3c9e2;
+            --leaf-green: #a8d5ba;
+            --clay-brown: #d7b98e;
+        }
+
+        body {
+            font-family: 'Zen Maru Gothic', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--main-text);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.6;
+        }
+
+        header {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #78909c;
+            margin-bottom: 10px;
+        }
+
+        .rain-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            margin-bottom: 50px;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            border-bottom: 2px dashed var(--accent-blue);
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #607d8b;
+        }
+
+        .info-card, .tool-card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid #e1e8ed;
+        }
+
+        .data-label {
+            font-size: 0.8rem;
+            color: #90a4ae;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .data-value {
+            font-weight: bold;
+            word-break: break-all;
+        }
+
+        /* カラーピッカーのスタイル */
+        .color-area {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        input[type="color"] {
+            -webkit-appearance: none;
+            border: none;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            background: none;
+        }
+
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        input[type="color"]::-webkit-color-swatch {
+            border: 5px solid white;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .color-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        footer {
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+            color: #b0bec5;
+        }
+
+        /* 雫の装飾 */
+        .drop {
+            position: fixed;
+            top: -10px;
+            width: 2px;
+            height: 10px;
+            background: var(--accent-blue);
+            opacity: 0.3;
+            z-index: -1;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(100vh); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="rain-icon">☔</div>
+        <h1>あめときどき、ツール</h1>
+        <p>ここにはなにもないかもしれません。</p>
+    </header>
+
+    <div class="container">
+        <!-- アクセス情報 -->
+        <section>
+            <h2>あなたのこと</h2>
+            <div class="info-card">
+                <span class="data-label">いまの場所</span>
+                <div id="ip-address" class="data-value">そっと確認中...</div>
+                
+                <span class="data-label">使っている道具</span>
+                <div id="user-agent" class="data-value" style="font-size: 0.9rem;">確認中...</div>
+            </div>
+        </section>
+
+        <!-- カラーピッカー -->
+        <section>
+            <h2>いろの採集</h2>
+            <p style="font-size: 0.9rem;">いろいろないろ。</p>
+            <div class="tool-card color-area">
+                <input type="color" id="color-picker" value="#a3c9e2">
+                <div>
+                    <div id="color-code" class="color-display">#a3c9e2</div>
+                    <span class="data-label">この色、いいですね。</span>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        &copy; 2026 JQ3XGZ. All rights reserved.
+    </footer>
+
+    <script>
+        // 1. 雫を降らせる演出
+        function createRain() {
+            for (let i = 0; i < 20; i++) {
+                const drop = document.createElement('div');
+                drop.className = 'drop';
+                drop.style.left = Math.random() * 100 + 'vw';
+                drop.style.animationDuration = (Math.random() * 1 + 0.5) + 's';
+                drop.style.animationDelay = Math.random() * 2 + 's';
+                document.body.appendChild(drop);
+            }
+        }
+        createRain();
+
+        // 2. ユーザーエージェントの表示
+        document.getElementById('user-agent').textContent = navigator.userAgent;
+
+        // 3. IPアドレスの取得（外部サービス ipify を利用）
+        // 指示にあった指数バックオフ付きのエラーハンドリングを簡易実装
+        async function fetchIP(retryCount = 0) {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                if (!response.ok) throw new Error('Network error');
+                const data = await response.json();
+                document.getElementById('ip-address').textContent = data.ip;
+            } catch (error) {
+                if (retryCount < 5) {
+                    const delay = Math.pow(2, retryCount) * 1000;
+                    setTimeout(() => fetchIP(retryCount + 1), delay);
+                } else {
+                    document.getElementById('ip-address').textContent = '霧が出ていて取得できませんでした（エラー）';
+                }
+            }
+        }
+        fetchIP();
+
+        // 4. カラーピッカー
+        const picker = document.getElementById('color-picker');
+        const codeDisplay = document.getElementById('color-code');
+
+        picker.addEventListener('input', (e) => {
+            const color = e.target.value.toUpperCase();
+            codeDisplay.textContent = color;
+            codeDisplay.style.color = color;
+        });
+    </script>
+</body>
+</html>
